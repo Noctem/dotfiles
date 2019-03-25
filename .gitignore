@@ -1,0 +1,11 @@
+# git directory
+.cfg
+
+# macOS junk
+.DS_Store
+
+# secret
+.zim/modules/secret
+
+# compiled zsh files
+*.zwc
