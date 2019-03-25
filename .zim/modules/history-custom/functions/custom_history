@@ -1,0 +1,2 @@
+# unless a number is provided, show all history events (starting from 1)
+[[ ${@[-1]} = *[0-9]* ]] && builtin fc -l "$@" || builtin fc -l "$@" 1
