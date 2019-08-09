@@ -1,0 +1,6 @@
+# macOS junk
+.DS_Store
+
+# Windows junk
+Thumbs.db
+[Dd]esktop.ini
