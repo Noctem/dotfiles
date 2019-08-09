@@ -4,8 +4,23 @@
 # macOS junk
 .DS_Store
 
+# compiled zsh files
+*.zwc
+
 # secret
 .zim/modules/secret
 
-# compiled zsh files
-*.zwc
+# prevent mistakes
+/.bash_history
+/.dotroot/usr/local/etc/ssh/ssh_host_ed25519_key
+/.gnupg/private-keys-v1.d
+/.ssh
+/.zsh_history
+/Desktop
+/Developer
+/Documents
+/Downloads
+/Dropbox
+/Movies
+/Music
+/Pictures
