@@ -1,0 +1,16 @@
+# syntax highlighting
+include /usr/local/share/nano/*.nanorc
+
+# Automatically indent a newly created line to the same number of
+# tabs and/or spaces as the previous line
+set autoindent
+
+# enable mouse support
+set mouse
+
+# Make the Home key smarter.  When Home is pressed anywhere but at the
+# very beginning of non-whitespace characters on a line, the cursor
+# will jump to that beginning (either forwards or backwards).  If the
+# cursor is already at that position, it will jump to the true
+# beginning of the line.
+set smarthome
