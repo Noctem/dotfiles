@@ -2,7 +2,7 @@
 # exports some variables and sets some aliases
 #
 
-export PATH="/usr/local/opt/python/libexec/bin:/usr/local/opt/ccache/libexec:/usr/local/bin/Scripts:${HOME}/Library/Python/3.7/bin:/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/usr/local/opt/python/libexec/bin:/usr/local/opt/ccache/libexec:${HOME}/bin:/usr/local/bin/Scripts:${HOME}/Library/Python/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export MACOSX_DEPLOYMENT_TARGET=10.14
 export CFLAGS='-march=native -pipe -flto'
 export CXXFLAGS="${CFLAGS}"
@@ -19,3 +19,7 @@ alias clang-tidy=/usr/local/opt/llvm/bin/clang-tidy
 alias config='git --git-dir="${HOME}/.cfg" --work-tree="$HOME"'
 
 alias l='exa -lahm'
+
+# Ctrl-Left and Ctrl-Right to move between words (or Command when using Alacritty on macOS)
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
