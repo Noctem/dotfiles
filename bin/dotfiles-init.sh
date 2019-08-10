@@ -6,6 +6,7 @@ shopt -s globstar
 
 # set defaults
 repo=git@github.com:Noctem/dotfiles.git
+zimfw=git@github.com:zimfw/zimfw.git
 usage='Usage: dotfiles-init.sh [-b branchname] [-c] [-n] [-s]'
 copy=cp
 link=ln
@@ -26,6 +27,7 @@ while getopts "b:chns" opt; do
 			;;
 		n)
 			repo=https://github.com/Noctem/dotfiles.git
+			zimfw=https://github.com/zimfw/zimfw.git
 			;;
 		s)
 			usesudo=1
@@ -43,6 +45,15 @@ if [[ $usesudo -eq 1 ]]; then
 fi
 
 tmpdir="${HOME}/dotfiles-tmp"
+
+if [[ ! -d "${HOME}/.zim" ]]; then
+	git clone --recursive "$zimfw" "${HOME}/.zim"
+	cd "${HOME}/.zim/templates"
+	for template_file in *; do
+		user_file="${HOME}/.${template_file}"
+		cat "$template_file" "$user_file" > "${user_file}.tmp" && mv "${user_file}"{.tmp,}
+	done
+fi
 
 [[ ! -d "$tmpdir" ]] && git clone --config status.showUntrackedFiles=no --separate-git-dir="${HOME}/.cfg" "$repo" "$tmpdir"
 
@@ -64,5 +75,5 @@ cd "$HOME"
 rm -r "$tmpdir"
 
 for file in .dotroot/**/*; do
-	$link -fv "$file" "${file#.dotroot}"
+	[[ -f "$file" ]] && $link -fv "$file" "${file#.dotroot}"
 done
