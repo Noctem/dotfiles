@@ -11,7 +11,7 @@
 # line. These dependencies are noted on the respective module's README.md.
 zmodules=(directory environment git git-info input utility \
           prompt completion syntax-highlighting \
-          history-custom brew gpg-agent secret pref ssh-custom)
+          history-custom brew gpg-agent pref ssh-custom)
 
 
 ###################
