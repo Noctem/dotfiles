@@ -7,19 +7,19 @@ shopt -s globstar
 # set defaults
 repo=git@github.com:Noctem/dotfiles.git
 zimfw=git@github.com:zimfw/zimfw.git
-usage='Usage: dotfiles-init.sh [-b branchname] [-c] [-n] [-s]'
+usage='Usage: dotfiles-init.sh [-b branchname] [-c] [-n] [-r] [-s]'
 copy=cp
 link=ln
 branch=master
 usesudo=0
 
-while getopts "b:chns" opt; do
+while getopts "b:chnrs" opt; do
 	case "$opt" in
 		b)
 			branch="$OPTARG"
 			;;
 		c)
-			link=cp
+			link='cp -p'
 			;;
 		h)
 			echo "$usage"
@@ -29,8 +29,11 @@ while getopts "b:chns" opt; do
 			repo=https://github.com/Noctem/dotfiles.git
 			zimfw=https://github.com/zimfw/zimfw.git
 			;;
-		s)
+		r)
 			usesudo=1
+			;;
+		s)
+			link='ln -s'
 			;;
 		?)
 			echo "$usage"
@@ -74,6 +77,6 @@ rsync -AgHhoprtvX "${tmpdir}"/ "${HOME}/"
 cd "$HOME"
 rm -r "$tmpdir"
 
-for file in .dotroot/**/*; do
+for file in .dotroot/**/*[^.DS_Store]; do
 	[[ -f "$file" ]] && $link -fv "$file" "${file#.dotroot}"
 done
