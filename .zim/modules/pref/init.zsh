@@ -2,7 +2,7 @@
 # exports some variables and sets some aliases
 #
 
-export PATH="/usr/lib/ccache/bin:${HOME}/bin:{HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="${HOME}/bin:{HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export CFLAGS='-march=native -pipe -flto'
 export CXXFLAGS="${CFLAGS}"
 export LDFLAGS="-flto"
