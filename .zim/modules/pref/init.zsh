@@ -2,9 +2,9 @@
 # exports some variables and sets some aliases
 #
 
-export PATH="/usr/lib/ccache/bin/:${HOME}/bin:{HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/usr/lib/ccache/bin/:${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export CFLAGS="-march=armv7-a -mfloat-abi=hard -mfpu=neon-fp-armv8 -pipe -fno-plt -mtune=native"
-export CXXFLAGS="${CFLAGS}"
+export CXXFLAGS="$CFLAGS"
 export LDFLAGS="-flto"
 
 # use rmate if connected via SSH, else nano
