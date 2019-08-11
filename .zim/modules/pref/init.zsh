@@ -2,9 +2,9 @@
 # exports some variables and sets some aliases
 #
 
-export PATH="${HOME}/bin:{HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="${HOME}/bin:${HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export CFLAGS='-march=native -pipe -flto'
-export CXXFLAGS="${CFLAGS}"
+export CXXFLAGS="$CFLAGS"
 export LDFLAGS="-flto"
 
 # use rmate if connected via SSH, else nano
