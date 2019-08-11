@@ -145,12 +145,6 @@ user_pref("browser.crashReports.unsubmittedCheck.autoSubmit2", false); // [FF58+
  * [2] https://firefox-source-docs.mozilla.org/browser/browser/BrowserErrorReporter.html ***/
 user_pref("browser.chrome.errorReporter.enabled", false);
 user_pref("browser.chrome.errorReporter.submitUrl", "");
-/* 0390: disable Captive Portal detection
- * [1] https://en.wikipedia.org/wiki/Captive_portal
- * [2] https://wiki.mozilla.org/Necko/CaptivePortal
- * [3] https://trac.torproject.org/projects/tor/ticket/21790 ***/
-user_pref("captivedetect.canonicalURL", "");
-user_pref("network.captive-portal-service.enabled", false); // [FF52+]
 
 /*** [SECTION 0400]: BLOCKLISTS / SAFE BROWSING (SB)
      Safe Browsing has taken many steps to preserve privacy. *IF* required, a full url is never
@@ -523,8 +517,6 @@ user_pref("webgl.enable-debug-renderer-info", false);
 
 // https://blog.mozilla.org/security/2018/10/18/encrypted-sni-comes-to-firefox-nightly/
 user_pref("network.security.esni.enabled", true);
-
-user_pref("media.mediasource.webm.enabled", true);
 
 /* END: internal custom pref to test for syntax errors ***/
 user_pref("_user.js.parrot", "omega");
