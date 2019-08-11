@@ -1,5 +1,5 @@
 # syntax highlighting
-include /usr/local/share/nano/*.nanorc
+include /usr/share/nano/*.nanorc
 
 # Automatically indent a newly created line to the same number of
 # tabs and/or spaces as the previous line
