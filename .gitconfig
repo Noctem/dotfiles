@@ -7,7 +7,7 @@
 	# maximize compression
 	compression = 9
 
-	editor = /usr/local/bin/mate -w
+	editor = nano
 	excludesfile = ~/.globalgitignore
 
 	# Speed up commands involving untracked files such as `git status`
@@ -23,7 +23,7 @@
 	rb = rebase --interactive --autosquash
 
 	# commit with date of supplied file
-	cdate = "!f() { git commit --date \"$(stat -f %Sm -t '%s %z' \"$1\")\"; }; f"
+	cdate = "!f() { git commit --date \"$(stat -c %y \"$1\")\"; }; f"
 
 	# amend previous commit
 	cam = commit --amend
@@ -60,20 +60,6 @@
 	# always sign commits
 	gpgsign = true
 
-# Kaleidoscope for graphical diffs and merges
-[diff]
-	tool = Kaleidoscope
-
-[merge]
-	tool = Kaleidoscope
-
-[mergetool "Kaleidoscope"]
-	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-	trustexitcode = true
-
-[difftool "Kaleidoscope"]
-	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
-
 [mergetool]
 	keepBackup = true
 	prompt = false
@@ -96,7 +82,3 @@
 
 [rebase]
 	autosquash = true
-
-[url "git@github.com:"]
-	# force SSH with GitHub
-	insteadOf = https://github.com/
