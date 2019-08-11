@@ -2,24 +2,20 @@
 # exports some variables and sets some aliases
 #
 
-export PATH="/usr/local/opt/python/libexec/bin:/usr/local/opt/ccache/libexec:${HOME}/bin:/usr/local/bin/Scripts:${HOME}/Library/Python/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export MACOSX_DEPLOYMENT_TARGET=10.14
+export PATH="/usr/lib/ccache/bin:${HOME}/bin:{HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export CFLAGS='-march=native -pipe -flto'
 export CXXFLAGS="${CFLAGS}"
-export OBJCFLAGS="${CFLAGS}"
-export OBJCXXFLAGS="${CFLAGS}"
 export LDFLAGS="-flto"
 
-# use rmate if connected via SSH, else mate
-[[ $SSH_TTY ]] && export EDITOR='rmate -w' || export EDITOR='mate -w'
-
-alias clang-check=/usr/local/opt/llvm/bin/clang-check
-alias clang-tidy=/usr/local/opt/llvm/bin/clang-tidy
+# use rmate if connected via SSH, else nano
+[[ $SSH_TTY ]] && export EDITOR='rmate -w' || export EDITOR='nano'
 
 alias config='git --git-dir="${HOME}/.cfg" --work-tree="$HOME"'
 
 alias l='exa -lahm'
+alias pac='pacman'
+alias spac='sudo pacman'
 
-# Ctrl-Left and Ctrl-Right to move between words (or Command when using Alacritty on macOS)
+# Ctrl-Left and Ctrl-Right to move between words
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
