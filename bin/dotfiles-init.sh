@@ -84,3 +84,8 @@ $remove -r "$tmpdir"
 for file in .dotroot/**/!(.DS_Store|.|..); do
 	[[ -f "$file" ]] && $link -fv "$file" "${file#.dotroot}"
 done
+
+# not in dotroot because profile names are generated randomly
+if compgen -G 'Library/Application Support/Firefox/Profiles/*.default' > /dev/null; then
+	$link -fv .dotother/user.js 'Library/Application Support/Firefox/Profiles/'*'.default/user.js'
+fi
