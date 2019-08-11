@@ -6,8 +6,8 @@
 HISTFILE="${HOME}/.zsh_history"
 
 # The maximum number of events stored in the internal history list and in the history file.
-HISTSIZE=1048576
-SAVEHIST=16777216
+HISTSIZE=65536
+SAVEHIST=1048576
 
 # record timestamp of command in HISTFILE
 setopt EXTENDED_HISTORY
