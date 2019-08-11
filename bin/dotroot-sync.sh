@@ -48,11 +48,6 @@ if [[ $from -ne 1 ]]; then
 	for file in .dotroot/**/!(.DS_Store|.|..); do
 		[[ -f "$file" ]] && $link -fv "$file" "${file#.dotroot}"
 	done
-
-	# not in dotroot because profile names are generated randomly
-	if compgen -G 'Library/Application Support/Firefox/Profiles/*.default' > /dev/null; then
-		$link -fv .dotother/user.js 'Library/Application Support/Firefox/Profiles/'*'.default/user.js'
-	fi
 else
 	if [[ "$link" = *'ln -s' ]]; then
 		echo 'Requested symlinks from root into .dotroot, which is not allowed.'
@@ -62,8 +57,4 @@ else
 	for file in .dotroot/**/!(.DS_Store|.|..); do
 		[[ -f "${file#.dotroot}" ]] && $link -fv "${file#.dotroot}" "$file"
 	done
-
-	if compgen -G 'Library/Application Support/Firefox/Profiles/*.default/user.js' > /dev/null; then
-		$link -fv 'Library/Application Support/Firefox/Profiles/'*'.default/user.js' .dotother/user.js
-	fi
 fi
