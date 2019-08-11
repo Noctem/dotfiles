@@ -2,18 +2,21 @@
 
 set -o pipefail -e
 shopt -s dotglob
+shopt -s extglob
 shopt -s globstar
+shopt -s nullglob
 
 # set defaults
 repo=git@github.com:Noctem/dotfiles.git
 zimfw=git@github.com:zimfw/zimfw.git
 usage='Usage: dotfiles-init.sh [-b branchname] [-c] [-n] [-r] [-s]'
-copy=cp
-link=ln
+copy='cp'
+link='ln'
+remove='rm'
 branch=master
 usesudo=0
 
-while getopts "b:chnrs" opt; do
+while getopts 'b:chnrs' opt; do
 	case "$opt" in
 		b)
 			branch="$OPTARG"
@@ -45,6 +48,7 @@ done
 if [[ $usesudo -eq 1 ]]; then
 	copy="sudo ${copy}"
 	link="sudo ${link}"
+	remove="sudo ${remove}"
 fi
 
 tmpdir="${HOME}/dotfiles-tmp"
@@ -62,21 +66,21 @@ fi
 
 cd "$tmpdir"
 git checkout "$branch" 2>/dev/null || git checkout -b "$branch"
-for file in **/*[^.git]; do
+for file in **/!(.DS_Store|.|..|.git); do
 	[[ -f "${HOME}/${file}" ]] && $copy -fpv "${HOME}/${file}" "$file"
 done
 
-for file in .dotroot/**/*; do
+for file in .dotroot/**/!(.DS_Store|.|..); do
 	[[ -f "${file#.dotroot}" ]] && $copy -fpv "${file#.dotroot}" "$file"
 done
 
-read -p "Commit any desired changes and press enter when ${tmpdir} is ready to deploy to your real home directory."
+read -pr "Commit any desired changes and press enter when ${tmpdir} is ready to deploy to your real home directory."
 
 rm -f .git
 rsync -AgHhoprtvX "${tmpdir}"/ "${HOME}/"
 cd "$HOME"
-rm -r "$tmpdir"
+$remove -r "$tmpdir"
 
-for file in .dotroot/**/*[^.DS_Store]; do
+for file in .dotroot/**/!(.DS_Store|.|..); do
 	[[ -f "$file" ]] && $link -fv "$file" "${file#.dotroot}"
 done

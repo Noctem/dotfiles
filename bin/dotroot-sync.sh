@@ -2,20 +2,22 @@
 
 set -o pipefail -e
 shopt -s dotglob
+shopt -s extglob
 shopt -s globstar
+shopt -s nullglob
 
 usage='Usage: dotroot-sync.sh [-c] [-f] [-r] [-s]'
-copy=cp
-link=ln
+copy='cp'
+link='ln'
 usesudo=0
 from=0
 
-while getopts "cfhrs" opt; do
+while getopts 'cfhrs' opt; do
 	case "$opt" in
 		c)
 			link='cp -p'
 			;;
-		c)
+		f)
 			from=1
 			;;
 		h)
@@ -43,16 +45,16 @@ fi
 cd "$HOME"
 
 if [[ $from -ne 1 ]]; then
-	for file in .dotroot/**/*[^.DS_Store]; do
+	for file in .dotroot/**/!(.DS_Store|.|..); do
 		[[ -f "$file" ]] && $link -fv "$file" "${file#.dotroot}"
 	done
 else
-	if [[ "$link" = *"ln -s" ]]; then
-		echo "Requested symlinks from root into .dotroot, which is not allowed."
+	if [[ "$link" = *'ln -s' ]]; then
+		echo 'Requested symlinks from root into .dotroot, which is not allowed.'
 		exit 1
 	fi
 
-	for file in .dotroot/**/*[^.DS_Store]; do
+	for file in .dotroot/**/!(.DS_Store|.|..); do
 		[[ -f "${file#.dotroot}" ]] && $link -fv "${file#.dotroot}" "$file"
 	done
 fi
