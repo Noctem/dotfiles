@@ -1,0 +1,4 @@
+# this hack was needed for my default IPv6 route to get set on my LAN-facing interface
+# if you know why that is, or a better way, please let me know
+ip route add default via $(ip -6 route list dev extern0 default | grep -oP 'via \K[0-9a-f:]*') dev intern0
+exit 0
