@@ -35,14 +35,7 @@ Host raspi2
 
 ### prioritize performance for hosts on the local network
 
-Host router desktop air
-##	ordered by performance on i5
-	Ciphers aes128-gcm@openssh.com,aes256-gcm@openssh.com,aes192-ctr,aes128-ctr,aes256-ctr,chacha20-poly1305@openssh.com
-	MACs umac-128-etm@openssh.com,umac-128@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha2-512,hmac-sha2-256-etm@openssh.com,hmac-sha2-256
-##	rmate
-	RemoteForward 52698 localhost:52698
-
-Host raspi*
+Host router desktop air raspi*
 ##	ordered by performance on Raspberry Pi 3
 	Ciphers aes128-ctr,aes128-gcm@openssh.com,aes192-ctr,aes256-ctr,chacha20-poly1305@openssh.com,aes256-gcm@openssh.com
 	MACs umac-128-etm@openssh.com,umac-128@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-512

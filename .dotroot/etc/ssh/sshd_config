@@ -17,11 +17,12 @@ ListenAddress ::
 HostKey /usr/local/etc/ssh/ssh_host_ed25519_key
 HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com
 
-# Ciphers and keying
+## Ciphers and keying
 #RekeyLimit default none
 KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512 
-Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
-MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+# prioritize performance because this is only accessible locally
+Ciphers aes128-ctr,aes128-gcm@openssh.com,aes192-ctr,aes256-ctr,chacha20-poly1305@openssh.com,aes256-gcm@openssh.com
+MACs umac-128-etm@openssh.com,umac-128@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-512
 
 # Logging
 #SyslogFacility AUTH
@@ -106,6 +107,11 @@ MaxStartups 8:32:64
 
 # override default of no subsystems
 Subsystem	sftp	internal-sftp
+
+# restricted user for iOS shortcuts which unfortunately
+# do not currently support public key authentication
+Match User siri
+	PasswordAuthentication yes
 
 #Match Group sftp
 #	X11Forwarding no
