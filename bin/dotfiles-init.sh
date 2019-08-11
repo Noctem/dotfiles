@@ -74,7 +74,7 @@ for file in .dotroot/**/!(.DS_Store|.|..); do
 	[[ -f "${file#.dotroot}" ]] && $copy -fpv "${file#.dotroot}" "$file"
 done
 
-read -pr "Commit any desired changes and press enter when ${tmpdir} is ready to deploy to your real home directory."
+read -p "Commit any desired changes and press enter when ${tmpdir} is ready to deploy to your real home directory."
 
 rm -f .git
 rsync -AgHhoprtvX "${tmpdir}"/ "${HOME}/"
