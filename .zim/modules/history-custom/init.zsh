@@ -38,13 +38,3 @@ alias history='custom_history'
 
 # Lists the ten most used commands.
 alias history-stat="fc -ln 0 | awk '{print \$1}' | sort | uniq -c | sort -nr | head"
-
-# start typing + [Up-Arrow] - fuzzy find history forward
-autoload -U up-line-or-beginning-search
-zle -N up-line-or-beginning-search
-bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
-
-# start typing + [Down-Arrow] - fuzzy find history backward
-autoload -U down-line-or-beginning-search
-zle -N down-line-or-beginning-search
-bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
