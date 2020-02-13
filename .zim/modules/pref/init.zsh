@@ -2,8 +2,8 @@
 # exports some variables and sets some aliases
 #
 
-export PATH="/usr/local/opt/python/libexec/bin:/usr/local/opt/ccache/libexec:${HOME}/bin:/usr/local/bin/Scripts:${HOME}/Library/Python/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export MACOSX_DEPLOYMENT_TARGET=10.14
+export PATH="/usr/local/opt/python/libexec/bin:/usr/local/opt/ccache/libexec:${HOME}/bin:/usr/local/bin/Scripts:${HOME}/Library/Python/3.8/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export MACOSX_DEPLOYMENT_TARGET=10.15
 export CFLAGS='-march=native -pipe -flto'
 export CXXFLAGS="${CFLAGS}"
 export OBJCFLAGS="${CFLAGS}"
@@ -23,3 +23,12 @@ alias l='exa -lahm'
 # Ctrl-Left and Ctrl-Right to move between words (or Command when using Alacritty on macOS)
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
+
+alias mp4box=MP4Box
+alias op='optimizeFiles.py -p'
+alias minfo='MP4Box -info'
+
+function aacon() {
+	convert -resize 768x768 -quality 90 "$1" "$1"
+	optimizeFiles.py -p "$(dirname ${1})"
+}
