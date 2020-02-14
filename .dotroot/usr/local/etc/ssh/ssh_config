@@ -24,14 +24,24 @@ Host github.com
 ## some aliases
 Host router
 	HostName 10.0.0.1
+Host switch
+	HostName 10.0.0.2
+	Ciphers aes128-gcm@openssh.com,aes256-gcm@openssh.com,aes192-ctr,aes128-ctr,aes256-ctr,chacha20-poly1305@openssh.com
+	MACs umac-128-etm@openssh.com,umac-128@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha2-512,hmac-sha2-256-etm@openssh.com,hmac-sha2-256,hmac-sha1
+	IdentityFile ~/.ssh/id_rsa
 Host desktop
 	HostName 10.0.0.3
 Host air
 	HostName 10.0.0.4
-Host raspi
+Host rpio
+	# Raspberry Pi with translucent case
 	HostName 10.0.0.6
-Host raspi2
+Host rpit
+	# Raspberry Pi with opaque case
 	HostName 10.0.0.7
+Host rpi4
+	# Raspberry Pi 4
+	HostName 10.0.0.8
 
 ### prioritize performance for hosts on the local network
 
