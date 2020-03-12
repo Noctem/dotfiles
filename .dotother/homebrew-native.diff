@@ -37,3 +37,57 @@ index 2aa440689..fcbdd1109 100644
      # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
      # compiler flag stripping. It consists of a string of characters which act
      # as flags. Some of these flags are mutually exclusive.
+diff --git a/Library/Homebrew/formula_installer.rb b/Library/Homebrew/formula_installer.rb
+index d7fba9fd9..1eec5e7ff 100644
+--- a/Library/Homebrew/formula_installer.rb
++++ b/Library/Homebrew/formula_installer.rb
+@@ -94,47 +94,11 @@ class FormulaInstaller
+   end
+ 
+   def pour_bottle?(install_bottle_options = { warn: false })
+-    return false if @pour_failed
+-
+-    return false if !formula.bottled? && !formula.local_bottle_path
+-    return true  if force_bottle?
+-    return false if build_from_source? || build_bottle? || interactive?
+-    return false if ARGV.cc
+-    return false unless options.empty?
+-    return false if formula.bottle_disabled?
+-
+-    unless formula.pour_bottle?
+-      if install_bottle_options[:warn] && formula.pour_bottle_check_unsatisfied_reason
+-        opoo <<~EOS
+-          Building #{formula.full_name} from source:
+-            #{formula.pour_bottle_check_unsatisfied_reason}
+-        EOS
+-      end
+-      return false
+-    end
+-
+-    bottle = formula.bottle_specification
+-    unless bottle.compatible_cellar?
+-      if install_bottle_options[:warn]
+-        opoo <<~EOS
+-          Building #{formula.full_name} from source:
+-            The bottle needs a #{bottle.cellar} Cellar (yours is #{HOMEBREW_CELLAR}).
+-        EOS
+-      end
+-      return false
+-    end
+-
+-    true
++    return false unless force_bottle?
+   end
+ 
+   def install_bottle_for?(dep, build)
+-    return pour_bottle? if dep == formula
+-    return false if ARGV.build_formula_from_source?(dep)
+-    return false unless dep.bottle && dep.pour_bottle?
+-    return false unless build.used_options.empty?
+-    return false unless dep.bottle.compatible_cellar?
+-
+-    true
++    return pour_bottle?
+   end
+ 
+   def prelude
