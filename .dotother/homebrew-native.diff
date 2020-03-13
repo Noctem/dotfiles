@@ -1,8 +1,8 @@
 diff --git a/Library/Homebrew/extend/ENV/shared.rb b/Library/Homebrew/extend/ENV/shared.rb
-index 067deee69..a600fc35c 100644
+index 82d78920e..78ba00348 100644
 --- a/Library/Homebrew/extend/ENV/shared.rb
 +++ b/Library/Homebrew/extend/ENV/shared.rb
-@@ -273,7 +273,7 @@ module SharedEnvExtension
+@@ -271,7 +271,7 @@ module SharedEnvExtension
      if ARGV.build_bottle? && ARGV.bottle_arch
        ARGV.bottle_arch
      else
@@ -25,14 +25,15 @@ index 06f4e50d3..38ad3209d 100644
    end
  
 diff --git a/Library/Homebrew/extend/ENV/super.rb b/Library/Homebrew/extend/ENV/super.rb
-index 2aa440689..fcbdd1109 100644
+index 2aa440689..059b3632d 100644
 --- a/Library/Homebrew/extend/ENV/super.rb
 +++ b/Library/Homebrew/extend/ENV/super.rb
-@@ -67,6 +67,8 @@ module Superenv
+@@ -67,6 +67,9 @@ module Superenv
      self["HOMEBREW_DEPENDENCIES"] = determine_dependencies
      self["HOMEBREW_FORMULA_PREFIX"] = formula.prefix unless formula.nil?
  
 +    append CC_FLAG_VARS, "-march=native"
++    append "RUSTFLAGS", "-C target-cpu=native"
 +
      # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
      # compiler flag stripping. It consists of a string of characters which act
