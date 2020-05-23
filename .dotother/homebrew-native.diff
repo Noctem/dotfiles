@@ -1,31 +1,18 @@
 diff --git a/Library/Homebrew/extend/ENV/shared.rb b/Library/Homebrew/extend/ENV/shared.rb
-index 82d78920e..78ba00348 100644
+index 6c995e8f1..a9809ae82 100644
 --- a/Library/Homebrew/extend/ENV/shared.rb
 +++ b/Library/Homebrew/extend/ENV/shared.rb
-@@ -271,7 +271,7 @@ module SharedEnvExtension
-     if ARGV.build_bottle? && ARGV.bottle_arch
-       ARGV.bottle_arch
+@@ -257,7 +257,7 @@ module SharedEnvExtension
+     if Homebrew.args.build_bottle? && Homebrew.args.bottle_arch
+       Homebrew.args.bottle_arch.to_sym
      else
 -      Hardware.oldest_cpu
 +      :native
      end
    end
  
-diff --git a/Library/Homebrew/extend/ENV/std.rb b/Library/Homebrew/extend/ENV/std.rb
-index 06f4e50d3..38ad3209d 100644
---- a/Library/Homebrew/extend/ENV/std.rb
-+++ b/Library/Homebrew/extend/ENV/std.rb
-@@ -114,7 +114,7 @@ module Stdenv
-     replace_in_cflags(/-Xarch_#{Hardware::CPU.arch_32_bit} (-march=\S*)/, '\1')
-     # Clang mistakenly enables AES-NI on plain Nehalem
-     map = Hardware::CPU.optimization_flags
--                       .merge(nehalem: "-march=nehalem -Xclang -target-feature -Xclang -aes")
-+                       .merge(native: "-march=native -Xclang -target-feature -Xclang -aes")
-     set_cpu_cflags map
-   end
- 
 diff --git a/Library/Homebrew/extend/ENV/super.rb b/Library/Homebrew/extend/ENV/super.rb
-index 2aa440689..059b3632d 100644
+index c23314922..ce44bdf86 100644
 --- a/Library/Homebrew/extend/ENV/super.rb
 +++ b/Library/Homebrew/extend/ENV/super.rb
 @@ -67,6 +67,9 @@ module Superenv
@@ -39,10 +26,10 @@ index 2aa440689..059b3632d 100644
      # compiler flag stripping. It consists of a string of characters which act
      # as flags. Some of these flags are mutually exclusive.
 diff --git a/Library/Homebrew/formula_installer.rb b/Library/Homebrew/formula_installer.rb
-index d7fba9fd9..1eec5e7ff 100644
+index b5f3bc774..9a6d8903f 100644
 --- a/Library/Homebrew/formula_installer.rb
 +++ b/Library/Homebrew/formula_installer.rb
-@@ -94,47 +94,11 @@ class FormulaInstaller
+@@ -95,47 +95,13 @@ class FormulaInstaller
    end
  
    def pour_bottle?(install_bottle_options = { warn: false })
@@ -51,7 +38,7 @@ index d7fba9fd9..1eec5e7ff 100644
 -    return false if !formula.bottled? && !formula.local_bottle_path
 -    return true  if force_bottle?
 -    return false if build_from_source? || build_bottle? || interactive?
--    return false if ARGV.cc
+-    return false if Homebrew.args.cc
 -    return false unless options.empty?
 -    return false if formula.bottle_disabled?
 -
@@ -77,18 +64,19 @@ index d7fba9fd9..1eec5e7ff 100644
 -    end
 -
 -    true
-+    return false unless force_bottle?
++    return true if force_bottle?
++    false
    end
  
    def install_bottle_for?(dep, build)
--    return pour_bottle? if dep == formula
--    return false if ARGV.build_formula_from_source?(dep)
+     return pour_bottle? if dep == formula
+-    return false if Homebrew.args.build_formula_from_source?(dep)
 -    return false unless dep.bottle && dep.pour_bottle?
 -    return false unless build.used_options.empty?
 -    return false unless dep.bottle.compatible_cellar?
 -
 -    true
-+    return pour_bottle?
++    false
    end
  
    def prelude
