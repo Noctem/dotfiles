@@ -87,6 +87,9 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 #typeset -A ZSH_HIGHLIGHT_STYLES
 #ZSH_HIGHLIGHT_STYLES[comment]='fg=10'
 
+# Load these ssh identities with the ssh module
+zssh_ids=(id_ed25519 github_ed25519)
+
 # ------------------
 # Initialize modules
 # ------------------
