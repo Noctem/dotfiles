@@ -1,10 +1,10 @@
 diff --git a/Library/Homebrew/extend/ENV/shared.rb b/Library/Homebrew/extend/ENV/shared.rb
-index 6c995e8f1..a9809ae82 100644
+index a4ed78a78..768921473 100644
 --- a/Library/Homebrew/extend/ENV/shared.rb
 +++ b/Library/Homebrew/extend/ENV/shared.rb
-@@ -257,7 +257,7 @@ module SharedEnvExtension
-     if Homebrew.args.build_bottle? && Homebrew.args.bottle_arch
-       Homebrew.args.bottle_arch.to_sym
+@@ -260,7 +260,7 @@ module SharedEnvExtension
+     if @build_bottle && @bottle_arch
+       @bottle_arch.to_sym
      else
 -      Hardware.oldest_cpu
 +      :native
@@ -12,12 +12,12 @@ index 6c995e8f1..a9809ae82 100644
    end
  
 diff --git a/Library/Homebrew/extend/ENV/super.rb b/Library/Homebrew/extend/ENV/super.rb
-index c23314922..ce44bdf86 100644
+index ba3015a62..3a649a26a 100644
 --- a/Library/Homebrew/extend/ENV/super.rb
 +++ b/Library/Homebrew/extend/ENV/super.rb
-@@ -67,6 +67,9 @@ module Superenv
+@@ -66,6 +66,9 @@ module Superenv
      self["HOMEBREW_DEPENDENCIES"] = determine_dependencies
-     self["HOMEBREW_FORMULA_PREFIX"] = formula.prefix unless formula.nil?
+     self["HOMEBREW_FORMULA_PREFIX"] = @formula.prefix unless @formula.nil?
  
 +    append CC_FLAG_VARS, "-march=native"
 +    append "RUSTFLAGS", "-C target-cpu=native"
@@ -26,19 +26,19 @@ index c23314922..ce44bdf86 100644
      # compiler flag stripping. It consists of a string of characters which act
      # as flags. Some of these flags are mutually exclusive.
 diff --git a/Library/Homebrew/formula_installer.rb b/Library/Homebrew/formula_installer.rb
-index b5f3bc774..9a6d8903f 100644
+index 980ff92b9..74d13ce37 100644
 --- a/Library/Homebrew/formula_installer.rb
 +++ b/Library/Homebrew/formula_installer.rb
-@@ -95,47 +95,13 @@ class FormulaInstaller
+@@ -125,47 +125,13 @@ class FormulaInstaller
    end
  
    def pour_bottle?(install_bottle_options = { warn: false })
 -    return false if @pour_failed
 -
 -    return false if !formula.bottled? && !formula.local_bottle_path
--    return true  if force_bottle?
+     return true  if force_bottle?
 -    return false if build_from_source? || build_bottle? || interactive?
--    return false if Homebrew.args.cc
+-    return false if cc
 -    return false unless options.empty?
 -    return false if formula.bottle_disabled?
 -
@@ -64,13 +64,12 @@ index b5f3bc774..9a6d8903f 100644
 -    end
 -
 -    true
-+    return true if force_bottle?
 +    false
    end
  
    def install_bottle_for?(dep, build)
      return pour_bottle? if dep == formula
--    return false if Homebrew.args.build_formula_from_source?(dep)
+-    return false if build_from_source_formulae.include?(dep.full_name)
 -    return false unless dep.bottle && dep.pour_bottle?
 -    return false unless build.used_options.empty?
 -    return false unless dep.bottle.compatible_cellar?
