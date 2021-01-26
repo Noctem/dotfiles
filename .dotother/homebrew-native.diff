@@ -1,8 +1,8 @@
 diff --git a/Library/Homebrew/extend/ENV/shared.rb b/Library/Homebrew/extend/ENV/shared.rb
-index a4ed78a78..768921473 100644
+index ca6ad76f1..05a2febd2 100644
 --- a/Library/Homebrew/extend/ENV/shared.rb
 +++ b/Library/Homebrew/extend/ENV/shared.rb
-@@ -260,7 +260,7 @@ module SharedEnvExtension
+@@ -302,7 +302,7 @@ module SharedEnvExtension
      if @build_bottle && @bottle_arch
        @bottle_arch.to_sym
      else
@@ -12,10 +12,10 @@ index a4ed78a78..768921473 100644
    end
  
 diff --git a/Library/Homebrew/extend/ENV/super.rb b/Library/Homebrew/extend/ENV/super.rb
-index ba3015a62..3a649a26a 100644
+index b8ccfdaae..1f244c17b 100644
 --- a/Library/Homebrew/extend/ENV/super.rb
 +++ b/Library/Homebrew/extend/ENV/super.rb
-@@ -66,6 +66,9 @@ module Superenv
+@@ -80,6 +80,9 @@ module Superenv
      self["HOMEBREW_DEPENDENCIES"] = determine_dependencies
      self["HOMEBREW_FORMULA_PREFIX"] = @formula.prefix unless @formula.nil?
  
@@ -26,24 +26,23 @@ index ba3015a62..3a649a26a 100644
      # compiler flag stripping. It consists of a string of characters which act
      # as flags. Some of these flags are mutually exclusive.
 diff --git a/Library/Homebrew/formula_installer.rb b/Library/Homebrew/formula_installer.rb
-index 980ff92b9..74d13ce37 100644
+index 469cd5153..076c28cb9 100644
 --- a/Library/Homebrew/formula_installer.rb
 +++ b/Library/Homebrew/formula_installer.rb
-@@ -125,47 +125,13 @@ class FormulaInstaller
-   end
- 
-   def pour_bottle?(install_bottle_options = { warn: false })
--    return false if @pour_failed
+@@ -155,48 +155,14 @@ class FormulaInstaller
+   sig { params(output_warning: T::Boolean).returns(T::Boolean) }
+   def pour_bottle?(output_warning: false)
+     return false if @pour_failed
 -
--    return false if !formula.bottled? && !formula.local_bottle_path
+-    return false if !formula.bottle_tag? && !formula.local_bottle_path
      return true  if force_bottle?
 -    return false if build_from_source? || build_bottle? || interactive?
--    return false if cc
+-    return false if @cc
 -    return false unless options.empty?
 -    return false if formula.bottle_disabled?
 -
 -    unless formula.pour_bottle?
--      if install_bottle_options[:warn] && formula.pour_bottle_check_unsatisfied_reason
+-      if output_warning && formula.pour_bottle_check_unsatisfied_reason
 -        opoo <<~EOS
 -          Building #{formula.full_name} from source:
 -            #{formula.pour_bottle_check_unsatisfied_reason}
@@ -53,11 +52,12 @@ index 980ff92b9..74d13ce37 100644
 -    end
 -
 -    bottle = formula.bottle_specification
--    unless bottle.compatible_cellar?
--      if install_bottle_options[:warn]
+-    unless bottle.compatible_locations?
+-      if output_warning
 -        opoo <<~EOS
--          Building #{formula.full_name} from source:
--            The bottle needs a #{bottle.cellar} Cellar (yours is #{HOMEBREW_CELLAR}).
+-          Building #{formula.full_name} from source as the bottle needs:
+-          - HOMEBREW_CELLAR: #{bottle.cellar} (yours is #{HOMEBREW_CELLAR})
+-          - HOMEBREW_PREFIX: #{bottle.prefix} (yours is #{HOMEBREW_PREFIX})
 -        EOS
 -      end
 -      return false
@@ -67,15 +67,16 @@ index 980ff92b9..74d13ce37 100644
 +    false
    end
  
+   sig { params(dep: Formula, build: BuildOptions).returns(T::Boolean) }
    def install_bottle_for?(dep, build)
      return pour_bottle? if dep == formula
--    return false if build_from_source_formulae.include?(dep.full_name)
--    return false unless dep.bottle && dep.pour_bottle?
--    return false unless build.used_options.empty?
--    return false unless dep.bottle.compatible_cellar?
 -
--    true
+-    @build_from_source_formulae.exclude?(dep.full_name) &&
+-      dep.bottle.present? &&
+-      dep.pour_bottle? &&
+-      build.used_options.empty? &&
+-      dep.bottle&.compatible_locations?
 +    false
    end
  
-   def prelude
+   sig { void }
