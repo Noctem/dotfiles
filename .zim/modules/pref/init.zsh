@@ -2,8 +2,8 @@
 # exports some variables and sets some aliases
 #
 
-export PATH="/usr/local/opt/python/libexec/bin:/usr/local/opt/ccache/libexec:${HOME}/bin:/usr/local/bin/Scripts:${HOME}/Library/Python/3.8/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export MACOSX_DEPLOYMENT_TARGET=10.15
+export PATH="/usr/local/opt/python@3.9/bin:/usr/local/opt/python@3.9/libexec/bin:/usr/local/opt/ccache/libexec:${HOME}/bin:/usr/local/bin/Scripts:${HOME}/Library/Python/3.9/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
+export MACOSX_DEPLOYMENT_TARGET=11.1
 export CFLAGS='-march=native -pipe -flto=thin -O3'
 export CXXFLAGS="$CFLAGS"
 export OBJCFLAGS="$CFLAGS"
@@ -17,6 +17,7 @@ export RUSTFLAGS="-C target-cpu=native"
 alias clang-format=/usr/local/opt/llvm/bin/clang-format
 alias clang-check=/usr/local/opt/llvm/bin/clang-check
 alias clang-tidy=/usr/local/opt/llvm/bin/clang-tidy
+alias python=python3
 
 alias config='git --git-dir="${HOME}/.cfg" --work-tree="$HOME"'
 
