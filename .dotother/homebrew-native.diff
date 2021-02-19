@@ -1,8 +1,8 @@
 diff --git a/Library/Homebrew/extend/ENV/shared.rb b/Library/Homebrew/extend/ENV/shared.rb
-index ca6ad76f1..05a2febd2 100644
+index d81f3328b..bcbc726ea 100644
 --- a/Library/Homebrew/extend/ENV/shared.rb
 +++ b/Library/Homebrew/extend/ENV/shared.rb
-@@ -302,7 +302,7 @@ module SharedEnvExtension
+@@ -304,7 +304,7 @@ module SharedEnvExtension
      if @build_bottle && @bottle_arch
        @bottle_arch.to_sym
      else
@@ -12,7 +12,7 @@ index ca6ad76f1..05a2febd2 100644
    end
  
 diff --git a/Library/Homebrew/extend/ENV/super.rb b/Library/Homebrew/extend/ENV/super.rb
-index b8ccfdaae..1f244c17b 100644
+index aae72826b..8fcd6a428 100644
 --- a/Library/Homebrew/extend/ENV/super.rb
 +++ b/Library/Homebrew/extend/ENV/super.rb
 @@ -80,6 +80,9 @@ module Superenv
@@ -26,15 +26,12 @@ index b8ccfdaae..1f244c17b 100644
      # compiler flag stripping. It consists of a string of characters which act
      # as flags. Some of these flags are mutually exclusive.
 diff --git a/Library/Homebrew/formula_installer.rb b/Library/Homebrew/formula_installer.rb
-index 469cd5153..076c28cb9 100644
+index 82c07fbe9..874f6ed5c 100644
 --- a/Library/Homebrew/formula_installer.rb
 +++ b/Library/Homebrew/formula_installer.rb
-@@ -155,48 +155,14 @@ class FormulaInstaller
-   sig { params(output_warning: T::Boolean).returns(T::Boolean) }
+@@ -155,45 +155,13 @@ class FormulaInstaller
    def pour_bottle?(output_warning: false)
-     return false if @pour_failed
--
--    return false if !formula.bottle_tag? && !formula.local_bottle_path
+     return false if !formula.bottle_tag? && !formula.local_bottle_path
      return true  if force_bottle?
 -    return false if build_from_source? || build_bottle? || interactive?
 -    return false if @cc
