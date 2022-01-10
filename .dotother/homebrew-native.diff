@@ -1,35 +1,35 @@
 diff --git a/Library/Homebrew/extend/ENV/shared.rb b/Library/Homebrew/extend/ENV/shared.rb
-index d81f3328b..bcbc726ea 100644
+index 381ceccfd..baa92021e 100644
 --- a/Library/Homebrew/extend/ENV/shared.rb
 +++ b/Library/Homebrew/extend/ENV/shared.rb
-@@ -304,7 +304,7 @@ module SharedEnvExtension
+@@ -275,7 +275,7 @@ module SharedEnvExtension
      if @build_bottle && @bottle_arch
        @bottle_arch.to_sym
      else
 -      Hardware.oldest_cpu
-+      :native
++      :alderlake
      end
    end
  
 diff --git a/Library/Homebrew/extend/ENV/super.rb b/Library/Homebrew/extend/ENV/super.rb
-index aae72826b..8fcd6a428 100644
+index c89a4604c..507a162dd 100644
 --- a/Library/Homebrew/extend/ENV/super.rb
 +++ b/Library/Homebrew/extend/ENV/super.rb
-@@ -80,6 +80,9 @@ module Superenv
+@@ -87,6 +87,9 @@ module Superenv
      self["HOMEBREW_DEPENDENCIES"] = determine_dependencies
      self["HOMEBREW_FORMULA_PREFIX"] = @formula.prefix unless @formula.nil?
  
-+    append CC_FLAG_VARS, "-march=native"
-+    append "RUSTFLAGS", "-C target-cpu=native"
++    append CC_FLAG_VARS, "-march=alderlake -mtune=alderlake -mno-avx512f"
++    append "RUSTFLAGS", "-C target-feature=-avx512 -C target-cpu=alderlake"
 +
      # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
      # compiler flag stripping. It consists of a string of characters which act
      # as flags. Some of these flags are mutually exclusive.
 diff --git a/Library/Homebrew/formula_installer.rb b/Library/Homebrew/formula_installer.rb
-index 82c07fbe9..874f6ed5c 100644
+index 0a51b1fbb..6d16fcc16 100644
 --- a/Library/Homebrew/formula_installer.rb
 +++ b/Library/Homebrew/formula_installer.rb
-@@ -155,45 +155,13 @@ class FormulaInstaller
+@@ -144,50 +144,15 @@ class FormulaInstaller
    def pour_bottle?(output_warning: false)
      return false if !formula.bottle_tag? && !formula.local_bottle_path
      return true  if force_bottle?
@@ -48,18 +48,23 @@ index 82c07fbe9..874f6ed5c 100644
 -      return false
 -    end
 -
--    bottle = formula.bottle_specification
+-    return true if formula.local_bottle_path.present?
+-
+-    bottle = formula.bottle_for_tag(Utils::Bottles.tag.to_sym)
+-    return false if bottle.nil?
+-
 -    unless bottle.compatible_locations?
 -      if output_warning
+-        prefix = Pathname(bottle.cellar).parent
 -        opoo <<~EOS
 -          Building #{formula.full_name} from source as the bottle needs:
 -          - HOMEBREW_CELLAR: #{bottle.cellar} (yours is #{HOMEBREW_CELLAR})
--          - HOMEBREW_PREFIX: #{bottle.prefix} (yours is #{HOMEBREW_PREFIX})
+-          - HOMEBREW_PREFIX: #{prefix} (yours is #{HOMEBREW_PREFIX})
 -        EOS
 -      end
 -      return false
 -    end
--
+ 
 -    true
 +    false
    end
@@ -67,7 +72,7 @@ index 82c07fbe9..874f6ed5c 100644
    sig { params(dep: Formula, build: BuildOptions).returns(T::Boolean) }
    def install_bottle_for?(dep, build)
      return pour_bottle? if dep == formula
--
+ 
 -    @build_from_source_formulae.exclude?(dep.full_name) &&
 -      dep.bottle.present? &&
 -      dep.pour_bottle? &&
@@ -77,3 +82,15 @@ index 82c07fbe9..874f6ed5c 100644
    end
  
    sig { void }
+diff --git a/Library/Homebrew/hardware.rb b/Library/Homebrew/hardware.rb
+index 52bf2e5e8..50e8be790 100644
+--- a/Library/Homebrew/hardware.rb
++++ b/Library/Homebrew/hardware.rb
+@@ -28,6 +28,7 @@ module Hardware
+       def optimization_flags
+         @optimization_flags ||= {
+           native:             arch_flag("native"),
++          alderlake:          "-march=alderlake",
+           ivybridge:          "-march=ivybridge",
+           sandybridge:        "-march=sandybridge",
+           nehalem:            "-march=nehalem",
