@@ -12,7 +12,7 @@ index 381ceccfd..baa92021e 100644
    end
  
 diff --git a/Library/Homebrew/extend/ENV/super.rb b/Library/Homebrew/extend/ENV/super.rb
-index c89a4604c..507a162dd 100644
+index c89a4604c..36abe5d13 100644
 --- a/Library/Homebrew/extend/ENV/super.rb
 +++ b/Library/Homebrew/extend/ENV/super.rb
 @@ -87,6 +87,9 @@ module Superenv
@@ -20,7 +20,7 @@ index c89a4604c..507a162dd 100644
      self["HOMEBREW_FORMULA_PREFIX"] = @formula.prefix unless @formula.nil?
  
 +    append CC_FLAG_VARS, "-march=alderlake -mtune=alderlake -mno-avx512f"
-+    append "RUSTFLAGS", "-C target-feature=-avx512 -C target-cpu=alderlake"
++    append "RUSTFLAGS", "-C target-cpu=alderlake"
 +
      # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
      # compiler flag stripping. It consists of a string of characters which act
