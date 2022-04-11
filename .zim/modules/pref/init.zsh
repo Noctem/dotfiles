@@ -2,14 +2,14 @@
 # exports some variables and sets some aliases
 #
 
-export PATH="/usr/local/opt/python@3.9/bin:/usr/local/opt/python@3.9/libexec/bin:/usr/local/opt/ccache/libexec:${HOME}/bin:/usr/local/bin/Scripts:${HOME}/Library/Python/3.9/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
-export MACOSX_DEPLOYMENT_TARGET=11.1
-export CFLAGS='-march=native -pipe -flto=thin -O3'
+export PATH="/usr/local/opt/python@3.10/bin:/usr/local/opt/python@3.10/libexec/bin:/usr/local/zfs/bin:/usr/local/opt/ccache/libexec:${HOME}/bin:/usr/local/bin/Scripts:${HOME}/Library/Python/3.10/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
+export MACOSX_DEPLOYMENT_TARGET=12.1
+export CFLAGS='-march=alderlake -mtune=alderlake -mno-avx512f -pipe -flto=thin -O2'
 export CXXFLAGS="$CFLAGS"
 export OBJCFLAGS="$CFLAGS"
 export OBJCXXFLAGS="$CFLAGS"
 export LDFLAGS="$CFLAGS"
-export RUSTFLAGS="-C target-cpu=native"
+export RUSTFLAGS="-C target-cpu=alderlake -C target-feature=-avx512f"
 
 # use rmate if connected via SSH, else mate
 [[ $SSH_TTY ]] && export EDITOR='rmate -w' || export EDITOR='mate -w'
