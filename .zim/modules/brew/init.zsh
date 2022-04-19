@@ -16,7 +16,7 @@ alias bupg='brew upgrade -s'
 alias br='brew reinstall -s'
 alias buu='bupd; brew upgrade -s'
 alias buuf='bupd; brew upgrade -s --fetch-HEAD'
-alias buuc='bupd; brew upgrade -s --fetch-HEAD && brew cu -a'
+alias buuc='bupd; brew upgrade -s --fetch-HEAD; brew upgrade --greedy'
 
 alias bun='brew uninstall'
 alias binf='brew info'
